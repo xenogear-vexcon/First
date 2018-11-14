@@ -8,4 +8,4 @@ if height > 110
 	puts "#{name}, ваш идеальный вес - #{perfect_weight}."
 else
 	puts "#{name}, ваш вес уже оптимальный."
-end
+end 
