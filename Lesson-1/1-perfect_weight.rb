@@ -1,5 +1,5 @@
 puts 'Введите, пожалуйста, ваше имя и рост, и я скажу вам ваш идеальный вес!'
-print 'Ваше имя:  '
+print 'Ваше имя: '
 name = gets.chomp.capitalize
 print 'И ваш рост в см: '
 height = gets.to_f
