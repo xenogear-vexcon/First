@@ -12,27 +12,27 @@ c = gets.to_f
 x, y, z = [a, b, c].sort
 
 def rectangular?(x, y, z)
-	z**2 == y**2 + x**2
+  z**2 == y**2 + x**2
 end
 
 def isosceles?(x, y, z)
-	[x, y, z].uniq.size == 2
+  [x, y, z].uniq.size == 2
 end
 
 def equilateral?(x, y, z)
-	[x, y, z].uniq.size == 1
+  [x, y, z].uniq.size == 1
 end
 
 if rectangular?(x, y, z) && isosceles?(x, y, z)
-	puts 'Треугольник прямоугольный и равнобедренный'
+  puts 'Треугольник прямоугольный и равнобедренный'
 elsif isosceles?(x, y, z) && equilateral?(x, y, z)
-	puts 'Треугольник равнобедренный и равносторонний'
+  puts 'Треугольник равнобедренный и равносторонний'
 elsif rectangular?(x, y, z)
-	puts 'Треугольник прямоугольный'
+  puts 'Треугольник прямоугольный'
 elsif isosceles?(x, y, z)
-	puts 'Треугольник равнобедренный'
+  puts 'Треугольник равнобедренный'
 elsif equilateral?(x, y, z)
-	puts 'Треугольник равносторонний'
+  puts 'Треугольник равносторонний'
 else
-	puts 'Треугольник обычный'
+  puts 'Треугольник обычный'
 end
