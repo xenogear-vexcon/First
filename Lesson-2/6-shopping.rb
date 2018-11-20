@@ -1,9 +1,3 @@
-print 'Введите наименование товара (для выхода введите "stop"): '
-good = gets.chomp
-print 'Введите цену товара за единицу: '
-price = (gets.chomp.to_f).round(2)
-print 'Введите количество товара: '
-count = (gets.chomp.to_f).round(2)
 
 product_total = {}
 basket_summ = 0
