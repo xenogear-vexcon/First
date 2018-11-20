@@ -1,4 +1,4 @@
-
+puts 'Добро пожаловать'
 product_total = {}
 basket_summ = 0
 
