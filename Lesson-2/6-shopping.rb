@@ -1,10 +1,4 @@
-print 'Введите наименование товара (для выхода введите "stop"): '
-good = gets.chomp
-print 'Введите цену товара за единицу: '
-price = (gets.chomp.to_f).round(2)
-print 'Введите количество товара: '
-count = (gets.chomp.to_f).round(2)
-
+puts 'Добро пожаловать'
 product_total = {}
 basket_summ = 0
 
@@ -13,12 +7,15 @@ loop do
   good = gets.chomp
   break if good == 'stop'
   print 'Введите цену товара за единицу: '
-  price = (gets.chomp.to_f)
+  price = gets.chomp.to_f
   print 'Введите количество товара: '
-  count = (gets.chomp.to_f)
-  product_total[good] = {'цена': price, 'количество': count}
-  basket_summ = basket_summ + price * count
+  count = gets.chomp.to_f
+  product_total[good] = { price: price, count: count }
 end
 
-puts product_total
-p basket_summ
+product_total.each do |good, total|
+  basket_summ = basket_summ + total[:price] * total[:count]
+end
+
+puts "В вышей корзине: #{product_total}"
+puts "Всего товаров на: #{basket_summ}"
