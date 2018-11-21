@@ -6,7 +6,7 @@ print 'Задайте год: '
 year = gets.chomp.to_i
 
 def leap?(year)
-  ((year % 400 == 0) || (year % 4 == 0) && (year % 100 != 0)) ? true : false
+  ((year % 400 == 0) || (year % 4 == 0) && (year % 100 != 0))
 end
 
 months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
