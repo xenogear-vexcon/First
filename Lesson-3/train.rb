@@ -53,6 +53,8 @@ class Train
   end
 
   def moving_backward
+    return unless previous_station
+    
     current_station.train_from_station(self)
     @station_index -= 1
     current_station.train_to_station(self)
@@ -69,6 +71,8 @@ class Train
   end
 
   def previous_station
+    return if @route.nil?
+    
     @route.stations[@station_index - 1]
   end
 
