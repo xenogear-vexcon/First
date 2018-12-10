@@ -3,9 +3,13 @@ class Station
 
   @@stations = []
 
+  def self.stations
+    @@stations
+  end
+
   def initialize(name)
     @name = name
-    @@stations << self
+    @@stations << self.name
     @list_of_trains =[]
   end
 

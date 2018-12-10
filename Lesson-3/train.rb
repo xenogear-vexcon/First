@@ -1,38 +1,39 @@
 class Train
-  attr_reader :number, :type
-  attr_accessor :wagon_quantity, :speed, :route
+  attr_reader :number, :type, :wagons, :route, :speed
+  attr_accessor :wagon_quantity
 
   @@all_trains = []
 
-  def initialize(number, type, wagon_quantity = 1)
+  def initialize(number, type)
     #cargo or passenger
     @number = number
     @type = type
-    @wagon_quantity = wagon_quantity
     @speed = 0
     @@all_trains << self
     @station_index = 0
+    @wagons = []
   end
 
   def increase_speed(speed)
-    self.speed = speed
+    @speed = speed
   end
 
   def stop
-    self.speed = 0
+    @speed = 0
   end
 
-  def add_wagon
+  def add_wagon(wagon)
+    valid_wagon!(wagon)
     if stop
-      self.wagon_quantity += 1
+      @wagons << wagon
     else
       raise 'Train is on the way'
     end
   end
 
-  def remove_wagon
+  def remove_wagon(wagon)
     if stop
-      self.wagon_quantity -= 1 
+      @wagon.delete(wagon)
     else
       raise 'Train is on the way'
     end
@@ -71,4 +72,9 @@ class Train
     @route.stations[@station_index - 1]
   end
 
+  protected
+
+  def valid_wagon!(wagon)
+    raise 'Какой-то странный тип вагона' if wagon != ('cargo' || 'passenger')
+  end
 end
