@@ -1,6 +1,7 @@
 class Wagon
 
-  def initialize(type)
+  def initialize(number, type)
+    @number = number
     @type = type
   end
 

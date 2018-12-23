@@ -1,9 +1,10 @@
-class PassWagon < Wagon
+class PassengerWagon < Wagon
   attr_reader :free_seats, :taken_seats
   MAX_SEATS = 50
 
-  def initialize (seats = MAX_SEATS)
-    super('passenger')
+  def initialize (number, type = 'passenger', seats = MAX_SEATS)
+    @number = number
+    @type = type
     @free_seats = seats
     @taken_seats = 0
   end

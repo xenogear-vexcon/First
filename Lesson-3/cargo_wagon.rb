@@ -2,8 +2,9 @@ class CargoWagon < Wagon
   attr_reader :download, :unload
   MAX_WAGON_VOLUME = 100
 
-  def initialize(volume = MAX_WAGON_VOLUME)
-    super('cargo')
+  def initialize(number, volume = MAX_WAGON_VOLUME)
+    @number = number
+    @type = 'cargo'
     @download = 0
     @unload = volume
   end
