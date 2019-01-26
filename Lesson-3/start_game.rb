@@ -271,10 +271,7 @@ class StartGame
 
   def find_train(train_number, type)
     trains = @trains.select { |train| train.class == type }
-    trains.each do |train|
-      return train if train.number == train_number
-    end
-    nil
+    trains.detect { |train| train.number == train_number }
   end
 
   def train_by_type
