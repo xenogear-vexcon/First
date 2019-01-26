@@ -1,15 +1,36 @@
+
+# require_relative 'instance_counter'
+# require_relative 'manufacturing_company'
+
 class Train
+  include InstanceCounter
+  include Manufacturing
   attr_reader :number, :type, :wagons, :route, :speed
   attr_accessor :wagon_quantity
 
-  @@all_trains = []
+  @@all_trains = {}
+
+  def self.find(number)
+    if @@all_trains.keys.include?(number)
+      p "Поезд с номером #{number} имеет тип #{@@all_trains[number]}"
+    else
+      nil
+    end
+  end
+
+  def self.all
+    @@all_trains.each do |x, y|
+      puts "Поезд номер #{x} имеет тип #{y}"
+    end
+  end
 
   def initialize(number, type)
     #cargo or passenger
     @number = number
     @type = type
     @speed = 0
-    @@all_trains << self
+    @@all_trains.store(number, type)
+    register_instance
     @station_index = 0
     @wagons = []
   end

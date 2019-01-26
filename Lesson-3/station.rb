@@ -2,15 +2,15 @@ class Station
   attr_reader :station_name, :list_of_trains
 
   @@stations = []
+  @list_of_trains =[]
 
-  def self.stations
+  def self.all
     @@stations
   end
 
   def initialize(station_name)
     @station_name = station_name
     @@stations << self.station_name
-    @list_of_trains =[]
   end
 
   def train_to_station(train)

@@ -1,4 +1,5 @@
 class Wagon
+  include Manufacturing
 
   def initialize(number, type)
     @number = number
