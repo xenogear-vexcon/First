@@ -1,8 +1,10 @@
 
 require_relative 'instance_counter'
 require_relative 'manufacturing_company'
+require_relative 'validate'
 
 class Train
+  include Validate
   include InstanceCounter
   include Manufacturing
   attr_reader :number, :type, :wagons, :route, :speed
@@ -100,13 +102,6 @@ class Train
     @route.stations[@station_index - 1]
   end
 
-  def validate?
-    validate!
-    true
-  rescue
-    false
-  end
-
   protected
 
   def valid_wagon!(wagon)
@@ -114,9 +109,9 @@ class Train
   end
 
   def validate!
-    raise 'Номер не может быть пустым' if number.nil?
+    raise 'Номер не может быть пустым' unless number
     raise 'Номер поезда содердит 5-6 символов! 3 буквы или цифры, дефис при желании,' +
-           'и еще 2 буквы или цифры' if (number.length < 5) || (number.length > 6)
+           'и еще 2 буквы или цифры' unless number.length.between?(5, 6)
     raise 'Введен некорректный номер' if number !~ TRAIN_NUMBER
   end
 end

@@ -25,6 +25,6 @@ class Wagon
 
   def validate!
     raise 'Введен некорректный номер, должно быть 3 цифры!' if @number !~ WAGON_NUMBER
-    raise 'Введен некорректный тип вагона!' if @type != ('cargo' || 'passenger')
+    raise 'Введен некорректный тип вагона!' unless ['cargo', 'passenger'].include?(@type)
   end
 end

@@ -1,4 +1,7 @@
+require_relative 'validate'
+
 class Station
+  include Validate
   include InstanceCounter
   attr_reader :station_name, :list_of_trains
 
@@ -30,13 +33,6 @@ class Station
 
   def train_from_station(train)
     @list_of_trains.delete(train)
-  end
-
-  def validate?
-    validate!
-    true
-  rescue
-    false
   end
 
   private
