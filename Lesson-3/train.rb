@@ -1,7 +1,6 @@
-
-require_relative 'instance_counter'
-require_relative 'manufacturing_company'
-require_relative 'validate'
+require './modules/validate.rb'
+require './modules/instance_counter.rb'
+require './modules/manufacturing_company'
 
 class Train
   include Validate

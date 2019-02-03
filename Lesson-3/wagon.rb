@@ -1,7 +1,9 @@
-require_relative 'instance_counter'
-require_relative 'manufacturing_company'
+require './modules/validate.rb'
+require './modules/instance_counter.rb'
+require './modules/manufacturing_company'
 
 class Wagon
+  include Validate
   include InstanceCounter
   include Manufacturing
 
@@ -12,13 +14,6 @@ class Wagon
     @number = number
     @type = type
     validate!
-  end
-
-  def validate?
-    validate!
-    true
-  rescue
-    false
   end
 
   protected

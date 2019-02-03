@@ -1,6 +1,8 @@
-require_relative 'instance_counter'
+require './modules/validate.rb'
+require './modules/instance_counter.rb'
 
 class Route
+  include Validate
   include InstanceCounter
   attr_reader :stations
 
@@ -25,13 +27,6 @@ class Route
 
   def show_route_stations
     @@stations
-  end
-
-  def validate?
-    validate!
-    true
-  rescue
-    false
   end
 
   private

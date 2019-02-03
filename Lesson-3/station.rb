@@ -1,4 +1,5 @@
-require_relative 'validate'
+require './modules/validate.rb'
+require './modules/instance_counter.rb'
 
 class Station
   include Validate
