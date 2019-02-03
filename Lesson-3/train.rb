@@ -1,12 +1,14 @@
 
-# require_relative 'instance_counter'
-# require_relative 'manufacturing_company'
+require_relative 'instance_counter'
+require_relative 'manufacturing_company'
 
 class Train
   include InstanceCounter
   include Manufacturing
   attr_reader :number, :type, :wagons, :route, :speed
   attr_accessor :wagon_quantity
+
+  TRAIN_NUMBER = /^[а-яa-z0-9]{3}-*[а-яa-z0-9]{2}$/i
 
   @@all_trains = {}
 
@@ -26,10 +28,11 @@ class Train
 
   def initialize(number, type)
     #cargo or passenger
-    @number = number
+    @number = number.to_s
     @type = type
+    validate!
     @speed = 0
-    @@all_trains.store(number, type)
+    @@all_trains.store(number.to_s, type)
     register_instance
     @station_index = 0
     @wagons = []
@@ -97,9 +100,23 @@ class Train
     @route.stations[@station_index - 1]
   end
 
+  def validate?
+    validate!
+    true
+  rescue
+    false
+  end
+
   protected
 
   def valid_wagon!(wagon)
     raise 'Какой-то странный тип вагона' if wagon != ('cargo' || 'passenger')
+  end
+
+  def validate!
+    raise 'Номер не может быть пустым' if number.nil?
+    raise 'Номер поезда содердит 5-6 символов! 3 буквы или цифры, дефис при желании,' +
+           'и еще 2 буквы или цифры' if (number.length < 5) || (number.length > 6)
+    raise 'Введен некорректный номер' if number !~ TRAIN_NUMBER
   end
 end

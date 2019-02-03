@@ -11,6 +11,7 @@ class Station
 
   def initialize(station_name)
     @station_name = station_name
+    validate!
     @@stations << self.station_name
   end
 
@@ -30,4 +31,18 @@ class Station
   def train_from_station(train)
     @list_of_trains.delete(train)
   end
+
+  def validate?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private
+
+  def validate!
+    raise 'Названия станции должно иметь минимум 5 символов' if @station_name.length < 5
+  end
+
 end
