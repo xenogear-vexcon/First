@@ -15,10 +15,11 @@ class StartGame
             2 - добавить поезд
             3 - создать маршрут
             4 - назначить маршрут поезду
-            5 - добавить вагон к поезду
-            6 - отцепить вагон от поезда
-            7 - переместить поезд по маршруту
-            8 - просмотреть список станций и поездов
+            5 - создать вагон
+            6 - добавить вагон к поезду
+            7 - отцепить вагон от поезда
+            8 - переместить поезд по маршруту
+            9 - просмотреть список станций и поездов
             0 - выход"
 
       input = gets.to_i
@@ -35,11 +36,13 @@ class StartGame
       when 5
         add_wagon
       when 6
-        remove_wagon_from_train
+        add_wagon_to_train
       when 7
-        change_station
+        remove_wagon_from_train
       when 8
-        show_all_stations_trains
+        change_station
+      when 9
+        list_stations_and_trains
       when 0
         break
       else
@@ -77,6 +80,7 @@ class StartGame
     @trains << train
 
     puts "Добавлен поезд под номером #{train_number}."
+    puts @trains
   end
 
   def create_route
@@ -305,7 +309,7 @@ class StartGame
       puts 'Список грузовых поездов:'
     end
 
-    trains = @all_trains.select { |train| train.class == type }
+    trains = @trains.select { |train| train.class == type }
 
     trains.each do |train|
       puts train.number
@@ -339,5 +343,3 @@ class StartGame
       puts "#{index}: #{route.stations.first.name} - #{route.stations.last.name}"
     end
   end
-
-end

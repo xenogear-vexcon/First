@@ -15,6 +15,14 @@ class PassengerWagon < Wagon
     @taken_seats += 1
   end
 
+  def vacant_seats
+    @taken_seats
+  end
+
+  def free_seats
+    @free_seats
+  end
+
   private
 
   def check_vacant_seats!

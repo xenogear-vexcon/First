@@ -64,6 +64,10 @@ class Train
     end
   end
 
+  def all_wagons
+    @wagons.each { |wagon| yield(wagon) }
+  end
+
   def add_route(route)
     @route = route
     @route.stations.first.train_to_station(self)
@@ -104,12 +108,12 @@ class Train
   protected
 
   def valid_wagon!(wagon)
-    raise 'Какой-то странный тип вагона' if wagon != ('cargo' || 'passenger')
+    raise 'Какой-то странный тип вагона (должен быть cargo или passenger)' if wagon != ('cargo' || 'passenger')
   end
 
   def validate!
     raise 'Номер не может быть пустым' unless number
-    raise 'Номер поезда содердит 5-6 символов! 3 буквы или цифры, дефис при желании,' +
+    raise 'Номер поезда содержит 5-6 символов! 3 буквы или цифры, дефис при желании,' +
            'и еще 2 буквы или цифры' unless number.length.between?(5, 6)
     raise 'Введен некорректный номер' if number !~ TRAIN_NUMBER
   end
