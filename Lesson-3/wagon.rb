@@ -7,10 +7,10 @@ class Wagon
   include InstanceCounter
   include Manufacturing
 
-  WAGON_NUMBER = /^[0-9]{3}$/
+  WAGON_NUMBER = /^[0-9]{3}$/.freeze
 
   def initialize(number, type)
-    #cargo or passenger type
+    # cargo or passenger type
     @number = number
     @type = type
     validate!
@@ -20,6 +20,6 @@ class Wagon
 
   def validate!
     raise 'Введен некорректный номер, должно быть 3 цифры!' if @number !~ WAGON_NUMBER
-    raise 'Введен некорректный тип вагона!' unless ['cargo', 'passenger'].include?(@type)
+    raise 'Введен некорректный тип вагона!' unless %w[cargo passenger].include?(@type)
   end
 end

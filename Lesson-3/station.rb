@@ -6,17 +6,17 @@ class Station
   include InstanceCounter
   attr_reader :station_name, :list_of_trains
 
-  @@stations = []
-  @list_of_trains =[]
+  @stations = []
+  @list_of_trains = []
 
   def self.all
-    @@stations
+    @stations
   end
 
   def initialize(station_name)
     @station_name = station_name
     validate!
-    @@stations << self.station_name
+    @stations << self.station_name
   end
 
   def train_to_station(train)
@@ -41,5 +41,4 @@ class Station
   def validate!
     raise 'Названия станции должно иметь минимум 5 символов' if @station_name.length < 5
   end
-
 end

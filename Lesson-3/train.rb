@@ -9,31 +9,27 @@ class Train
   attr_reader :number, :type, :wagons, :route, :speed
   attr_accessor :wagon_quantity
 
-  TRAIN_NUMBER = /^[а-яa-z0-9]{3}-*[а-яa-z0-9]{2}$/i
+  TRAIN_NUMBER = /^[а-яa-z0-9]{3}-*[а-яa-z0-9]{2}$/i.freeze
 
-  @@all_trains = {}
+  @all_trains = {}
 
   def self.find(number)
-    if @@all_trains.keys.include?(number)
-      p "Поезд с номером #{number} имеет тип #{@@all_trains[number]}"
-    else
-      nil
-    end
+    puts "Поезд с номером #{number} имеет тип #{@all_trains[number]}" if @all_trains.key?(number)
   end
 
   def self.all
-    @@all_trains.each do |x, y|
+    @all_trains.each do |x, y|
       puts "Поезд номер #{x} имеет тип #{y}"
     end
   end
 
   def initialize(number, type)
-    #cargo or passenger
+    # cargo or passenger
     @number = number.to_s
     @type = type
     validate!
     @speed = 0
-    @@all_trains.store(number.to_s, type)
+    @all_trains.store(number.to_s, type)
     register_instance
     @station_index = 0
     @wagons = []
@@ -49,22 +45,14 @@ class Train
 
   def add_wagon(wagon)
     valid_wagon!(wagon)
-    if stop
-      @wagons << wagon
-    else
-      raise 'Train is on the way'
-    end
+    stop ? (@wagons << wagon) : (raise 'Train is on the way')
   end
 
   def remove_wagon(wagon)
-    if stop
-      @wagon.delete(wagon)
-    else
-      raise 'Train is on the way'
-    end
+    stop ? @wagon.delete(wagon) : (raise 'Train is on the way')
   end
 
-  def all_wagons
+  def each_wagons
     @wagons.each { |wagon| yield(wagon) }
   end
 
@@ -83,7 +71,7 @@ class Train
 
   def moving_backward
     return unless previous_station
-    
+
     current_station.train_from_station(self)
     @station_index -= 1
     current_station.train_to_station(self)
@@ -95,13 +83,13 @@ class Train
 
   def next_station
     return if @route.nil?
-    
+
     @route.stations[@station_index + 1]
   end
 
   def previous_station
     return if @route.nil?
-    
+
     @route.stations[@station_index - 1]
   end
 
@@ -113,8 +101,11 @@ class Train
 
   def validate!
     raise 'Номер не может быть пустым' unless number
-    raise 'Номер поезда содержит 5-6 символов! 3 буквы или цифры, дефис при желании,' +
-           'и еще 2 буквы или цифры' unless number.length.between?(5, 6)
+
+    unless number.length.between?(5, 6)
+      raise 'Номер поезда содержит 5-6 символов! 3 буквы или цифры, ',
+            'дефис при желании, и еще 2 буквы или цифры'
+    end
     raise 'Введен некорректный номер' if number !~ TRAIN_NUMBER
   end
 end
