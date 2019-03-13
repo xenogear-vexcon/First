@@ -16,7 +16,7 @@ class Route
   end
 
   def add_station(station)
-    raise 'Названия станции должно иметь минимум 5 символов' if station.length < 5
+    validate!
 
     @stations.insert(-2, station)
   end
@@ -33,5 +33,6 @@ class Route
 
   def validate!
     raise 'Названия станции должно иметь минимум 5 символов' if (@first_station.length < 5) || (@last_station.length < 5)
+    raise 'Названия станции должно иметь минимум 5 символов' if station.length < 5
   end
 end
