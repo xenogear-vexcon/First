@@ -17,10 +17,7 @@ class CargoWagon < Wagon
   private
 
   def check_load!
-    if (@unload - volume) < 0
-      raise 'Нечего разгружать'
-    elsif (@download + volume) > MAX_WAGON_VOLUME
-      raise 'Перегруз!'
-    end
+    raise 'Нечего разгружать' if (@unload - volume) < 0
+    raise 'Перегруз!' if (@download + volume) > MAX_WAGON_VOLUME
   end
 end
