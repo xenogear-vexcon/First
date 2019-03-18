@@ -1,8 +1,8 @@
-require './modules/validate.rb'
+require './modules/validation.rb'
 require './modules/instance_counter.rb'
 
 class Route
-  include Validate
+  include Validation
   include InstanceCounter
   attr_reader :stations
 

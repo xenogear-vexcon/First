@@ -1,17 +1,20 @@
-require './modules/validate.rb'
-require './modules/instance_counter.rb'
-require './modules/manufacturing_company'
-
 class Train
-  include Validate
+  include Validation
   include InstanceCounter
   include Manufacturing
+  include Accessors
   attr_reader :number, :type, :wagons, :route, :speed
   attr_accessor :wagon_quantity
 
   TRAIN_NUMBER = /^[а-яa-z0-9]{3}-*[а-яa-z0-9]{2}$/i.freeze
 
   @all_trains = {}
+
+  attr_accessor_with_history :named, :another
+  strong_attr_accessor :name, String
+
+  validate :number, :presence
+  validate :number, :format, TRAIN_NUMBER
 
   def self.find(number)
     puts "Поезд с номером #{number} имеет тип #{@all_trains[number]}" if @all_trains.key?(number)

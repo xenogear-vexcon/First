@@ -1,9 +1,5 @@
-require './modules/validate.rb'
-require './modules/instance_counter.rb'
-require './modules/manufacturing_company'
-
 class Wagon
-  include Validate
+  include Validation
   include InstanceCounter
   include Manufacturing
 

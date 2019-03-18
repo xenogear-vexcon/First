@@ -1,8 +1,5 @@
-require './modules/validate.rb'
-require './modules/instance_counter.rb'
-
 class Station
-  include Validate
+  include Validation
   include InstanceCounter
   attr_reader :station_name, :list_of_trains
 
