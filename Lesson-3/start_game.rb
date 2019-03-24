@@ -54,10 +54,10 @@ class StartGame
 
   def add_station
     print 'Введите название станции: '
-    input = Station.new(gets.chomp)
-    station = input.name
+    station = Station.new(gets.chomp)
     @stations << station
-    puts "Новая станция - #{station}."
+    puts "Новая станция - #{station.station_name}."
+    puts "Список всех станций: #{@stations}"
   end
 
   def add_train
@@ -79,16 +79,16 @@ class StartGame
     @trains << @train
 
     puts "Добавлен поезд под номером #{@train_number}."
-    puts @trains
+    p @trains
   end
 
   def create_route
-    puts 'Создаем маршрут. Для начала обязательно ввести ' \
+    puts 'Создаем маршрут. Для начала введем номер маршрута, ' \
          'начальную и конечную станции!'
     print 'Введите номер маршрута: '
-    route_number = gets.to_i
+    @route_number = gets.to_i
 
-    @route = find_route_number(route_number)
+    @route = find_route_number(@route_number)
 
     print 'Первая станция: '
     first_station = gets.chomp
@@ -113,7 +113,8 @@ class StartGame
 
     @routes << @route
 
-    print "Наш новый маршрут: #{@route.stations}\n"
+    puts "Наш новый маршрут: #{@route.stations}, номер - #{@route_number}"
+    p @routes
   end
 
   def route_to_the_train
@@ -140,11 +141,11 @@ class StartGame
 
     show_routes
     print 'Какой маршрут добавим? '
-    route_number = gets.chomp
-    @route = find_route_number(route_number)
+    @route_number = gets.chomp
+    @route = find_route_number(@route_number)
 
     if @route.nil?
-      puts "Маршрута с номером #{route_number} нет"
+      puts "Маршрута с номером #{@route_number} нет"
     else
       @train.add_route(@route)
       puts "Поезду #{@train_number} установлен маршрут #{@route.stations.first.name}",
@@ -189,7 +190,8 @@ class StartGame
 
     if @wagon
       @train.add_wagon(@wagon)
-      puts "Поезду #{train.number} был добавлен вагон #{@wagon.number}"
+      puts "Поезду #{@train.number} был добавлен вагон #{@wagon.number}"
+      @wagons.delete(@wagon)
     else
       puts 'Ничего не произошло((('
     end
@@ -245,19 +247,18 @@ class StartGame
   def list_stations_and_trains
     puts 'Список станций и поездов: '
     @stations.each.with_index(1) do |station, index|
-      puts "#{index}: #{station.station_name}"
-      trains = station.train_type
-      trains.each.with_index(1) do |train, index_train|
-        puts " #{index_train}: Поезд номер #{train.number}"
-      end
+      puts "#{index}: Станция #{station.station_name}"
+    end
+    @trains.each.with_index(1) do |train, index_train|
+      puts " #{index_train}: Поезд номер #{train.number}"
     end
   end
 
   def current_trains_info
-    puts "#{show_trains(PassengerTrain)}""\n"
-    puts "#{show_wagons(PassengerWagon)}""\n"
-    puts "#{show_trains(CargoTrain)}""\n"
-    puts "#{show_wagons(CargoWagon)}""\n"
+    puts "#{show_trains(PassengerTrain)}\n"
+    puts "#{show_wagons(PassengerWagon)}\n"
+    puts "#{show_trains(CargoTrain)}\n"
+    puts "#{show_wagons(CargoWagon)}\n"
   end
 end
 
@@ -270,10 +271,10 @@ def find_train(train_number, type)
   trains.detect { |train| train.number == train_number }
 end
 
-def train_by_type(input)
-  if input == 1
+def train_by_type
+  if @train_number == 1
     @train = find_train(@train_number, PassengerTrain)
-  elsif input == 2
+  elsif @train_number == 2
     @train = find_train(@train_number, CargoTrain)
   end
 end
@@ -283,10 +284,10 @@ def find_wagon(wagon_number, type)
   wagons.detect { |wagon| wagon.number == wagon_number }
 end
 
-def wagon_by_type(input)
-  if input == 1
+def wagon_by_type
+  if @wagon_number == 1
     @wagon = find_wagon(@wagon_number, PassengerWagon)
-  elsif input == 2
+  elsif @wagon_number == 2
     @wagon = find_wagon(@wagon_number, CargoWagon)
   end
 end
@@ -300,9 +301,7 @@ def show_trains(type)
 
   trains = @trains.select { |train| train.class == type }
 
-  trains.each do |train|
-    puts train.number
-  end
+  trains.each { |train| puts train }
 end
 
 def show_wagons(type)
@@ -314,9 +313,7 @@ def show_wagons(type)
 
   wagons = @wagons.select { |wagon| wagon.class == type }
 
-  wagons.each do |wagon|
-    puts wagon.number
-  end
+  wagons.each { |wagon| puts wagon }
 end
 
 def show_stations
@@ -329,6 +326,6 @@ end
 def show_routes
   puts 'Список маршрутов: '
   @routes.each.with_index(1) do |route, index|
-    puts "#{index}: #{route.stations.first.name} - #{route.stations.last.name}"
+    puts "#{index}: #{@route_number} - #{route.stations.first} - #{route.stations.last}"
   end
 end

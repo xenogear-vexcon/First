@@ -1,3 +1,8 @@
+require './modules/validation'
+require './modules/instance_counter'
+require './modules/manufacturing_company'
+require './modules/accessors'
+
 class Train
   include Validation
   include InstanceCounter
@@ -8,7 +13,7 @@ class Train
 
   TRAIN_NUMBER = /^[а-яa-z0-9]{3}-*[а-яa-z0-9]{2}$/i.freeze
 
-  @all_trains = {}
+  @@all_trains = {}
 
   attr_accessor_with_history :named, :another
   strong_attr_accessor :name, String
@@ -17,11 +22,11 @@ class Train
   validate :number, :format, TRAIN_NUMBER
 
   def self.find(number)
-    puts "Поезд с номером #{number} имеет тип #{@all_trains[number]}" if @all_trains.key?(number)
+    puts "Поезд с номером #{number} имеет тип #{@@all_trains[number]}" if @@all_trains.key?(number)
   end
 
   def self.all
-    @all_trains.each do |x, y|
+    @@all_trains.each do |x, y|
       puts "Поезд номер #{x} имеет тип #{y}"
     end
   end
@@ -32,7 +37,7 @@ class Train
     @type = type
     validate!
     @speed = 0
-    @all_trains.store(number.to_s, type)
+    @@all_trains.store(number.to_s, type)
     register_instance
     @station_index = 0
     @wagons = []
@@ -52,7 +57,7 @@ class Train
   end
 
   def remove_wagon(wagon)
-    stop ? @wagon.delete(wagon) : (raise 'Train is on the way')
+    stop ? @wagons.delete(wagon) : (raise 'Train is on the way')
   end
 
   def each_wagons
@@ -61,7 +66,7 @@ class Train
 
   def add_route(route)
     @route = route
-    @route.stations.first.train_to_station(self)
+    @route.stations[0].train_to_station(self)
   end
 
   def moving_forward
@@ -99,15 +104,14 @@ class Train
   protected
 
   def valid_wagon!(wagon)
-    raise 'Какой-то странный тип вагона (должен быть cargo или passenger)' if wagon != ('cargo' || 'passenger')
+    raise 'Какой-то странный тип вагона (должен быть cargo или passenger)' if wagon.type != type
   end
 
   def validate!
     raise 'Номер не может быть пустым' unless number
 
     unless number.length.between?(5, 6)
-      raise 'Номер поезда содержит 5-6 символов! 3 буквы или цифры, ',
-            'дефис при желании, и еще 2 буквы или цифры'
+      raise 'Номер поезда содержит 5-6 символов! 3 буквы или цифры, дефис при желании, и еще 2 буквы или цифры'
     end
     raise 'Введен некорректный номер' if number !~ TRAIN_NUMBER
   end

@@ -2,6 +2,7 @@ class Wagon
   include Validation
   include InstanceCounter
   include Manufacturing
+  attr_reader :type, :number
 
   WAGON_NUMBER = /^[0-9]{3}$/.freeze
 

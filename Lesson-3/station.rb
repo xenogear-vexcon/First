@@ -1,19 +1,23 @@
+require './modules/validation'
+require './modules/instance_counter'
+
 class Station
   include Validation
   include InstanceCounter
   attr_reader :station_name, :list_of_trains
 
-  @stations = []
-  @list_of_trains = []
+  @@stations = []
 
   def self.all
-    @stations
+    @@stations
   end
 
   def initialize(station_name)
     @station_name = station_name
     validate!
-    @stations << self.station_name
+    @@stations << self
+    register_instance
+    @list_of_trains = []
   end
 
   def train_to_station(train)

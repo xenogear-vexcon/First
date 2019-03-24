@@ -10,7 +10,7 @@ require './start_game'
 require './modules/validation'
 require './modules/manufacturing_company'
 require './modules/instance_counter'
-require './accessors'
+require './modules/accessors'
 
 game = StartGame.new
 game.start

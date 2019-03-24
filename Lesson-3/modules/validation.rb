@@ -31,15 +31,15 @@ module Validation
 
     protected
 
-    def presence(attr_name)
+    def valid_presence(attr_name)
       raise "Can't be nil or empty!" if attr_name.nil? || attr_name.empty?
     end
 
-    def format(attr_name, format)
+    def valid_format(attr_name, format)
       raise "Invalid format!" if attr_name !~ format
     end
 
-    def type(attr_name, class_type)
+    def valid_type(attr_name, class_type)
       raise "Invalid class type" unless attr_name.class.is_a? class_type
     end
   end
