@@ -44,7 +44,7 @@ class StartGame
       end
 
       break if end_game?
-
+      continue_of_game
       separator
     end
   end
@@ -77,6 +77,15 @@ class StartGame
 
   def separator
     puts '------------------------------------'
+  end
+
+  def continue_of_game
+    puts 'Хотите продолжить игру? Нажмите любую клавишу для продолжения и 0 для выхода:'
+    input = gets.to_i
+    if input == 0
+      puts "#{@player.name} закончил игру и сохранил #{@player.money} долларов в своем кармане."
+      exit
+    end
   end
 
 end
