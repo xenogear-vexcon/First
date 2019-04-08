@@ -1,91 +1,91 @@
-require './cards'
 
 class StartGame
 
-  include Cards
+  BET = 10
+  PRIZE = 20
+
+  def initialize
+    @interface = Interface.new
+    @player = Participant.new(@interface.create_player)
+    @interface.player = @player
+    @dealer = Participant.new
+    @interface.dealer = @dealer
+  end
 
   def start
 
-    print 'Начинаем игру! Введите ваше имя: '
-    @player = Participant.new(gets.chomp.capitalize!)
-    @dealer = Participant.new
-
     loop do
 
-      separator
+      2.times { @interface.separator }
+      @deck = Deck.new
 
-      first_player_cards
+      2.times { @player.take_card(@deck.add_card) }
       @player.money = @player.money - BET
+      @player.sum_of_cards
 
-      take_card(@dealer, 2)
+      2.times { @dealer.take_card(@deck.add_card) }
       @dealer.money = @dealer.money - BET
+      @dealer.sum_of_cards
 
-      puts "Твои карты: #{@player.cards.keys}, сумма карт - #{sum_of_cards(@player)}, банк - #{@player.money}"
-      puts "Банк дилера - #{@dealer.money}"
-
-      print "Что делаем дальше, #{@player.name}? 1 - пропуск хода, 2 - взять еще карту, 0 - покинуть игру: "
+      @interface.info
+      @interface.question
       input = gets.to_i
 
       case input
         when 1
           skip_a_turn
         when 2
-          take_card(@player, 1)
-          take_card(@dealer, 1) if sum_of_cards(@dealer) < 17
+          @player.take_card(@deck.add_card)
+          @player.sum_of_cards
+          @dealer.take_card(@deck.add_card) if @dealer.cards_sum < 17
+          @dealer.sum_of_cards
           result
         when 0
-          puts "#{@player.name} закончил игру и сохранил #{@player.money} долларов в своем кармане."
+          out_of_game_info
           break
         else
-          puts 'некорректное значение'
+          @interface.error
           @player.money += BET
           @dealer.money += BET
           refresh
       end
 
       break if end_game?
-      continue_of_game
-      separator
+      @interface.continue_of_game
     end
   end
 
   protected
 
   def skip_a_turn
-    take_card(@dealer, 1) if sum_of_cards(@dealer) < 17
+    @dealer.take_card(@deck.add_card) if @dealer.cards_sum < 17
+    @dealer.sum_of_cards
     result
   end
 
   def result
-    open_cards
-    if (sum_of_cards(@player) < sum_of_cards(@dealer)) && (sum_of_cards(@dealer) <= 21) || (sum_of_cards(@player) > 21)
+    @interface.open_cards
+    if (@player.cards_sum < @dealer.cards_sum) && (@dealer.cards_sum <= 21) || (@player.cards_sum > 21)
       @dealer.money += PRIZE
-      puts 'дилер победил'
-    elsif (sum_of_cards(@player) > sum_of_cards(@dealer)) && (sum_of_cards(@player) <= 21) || (sum_of_cards(@dealer) > 21)
+      @interface.winner(@dealer)
+    elsif (@player.cards_sum > @dealer.cards_sum) && (@player.cards_sum <= 21) || (@dealer.cards_sum > 21)
       @player.money += PRIZE
-      puts 'игрок победил'
-    elsif sum_of_cards(@player) == sum_of_cards(@dealer)
-      puts 'ничья, куш поровну'
+      @interface.winner(@player)
+    elsif @player.cards_sum == @dealer.cards_sum
       (@player.money += (PRIZE/2)) && (@dealer.money += (PRIZE/2))
+      @interface.winner
     end
-    refresh
+    @player.refresh
+    @dealer.refresh
   end
 
   def end_game?
     (@player.money == 0) || (@dealer.money == 0)
   end
 
-  def separator
-    puts '------------------------------------'
-  end
-
-  def continue_of_game
-    puts 'Хотите продолжить игру? Нажмите любую клавишу для продолжения и 0 для выхода:'
-    input = gets.to_i
-    if input == 0
-      puts "#{@player.name} закончил игру и сохранил #{@player.money} долларов в своем кармане."
-      exit
-    end
+  def refresh
+    @cards = []
+    @sum_of_cards = 0
   end
 
 end
