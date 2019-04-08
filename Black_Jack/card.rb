@@ -10,7 +10,7 @@ class Card
   def value
     return @rank.to_i if @rank =~ /\d/
     return 10 if @rank =~ /[JQK]/
-    return 11 if @rank =~ /[A]/
+    11 if @rank =~ /[A]/
   end
 
 end

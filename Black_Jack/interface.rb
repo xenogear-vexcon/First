@@ -19,7 +19,7 @@ class Interface
   end
 
   def question
-    print "Что делаем дальше, #{@player.name}? 1 - пропуск хода, 2 - взять еще карту, 0 - покинуть игру: "
+    print "Что делаем дальше, #{@player.name}? 1 - пропуск хода, 2 - взять еще карту, 3 - открыть карты: "
   end
 
   def continue_of_game

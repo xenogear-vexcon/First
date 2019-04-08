@@ -45,9 +45,8 @@ class StartGame
           @dealer.take_card(@deck.add_card) if @dealer.cards_sum < 17
           @dealer.sum_of_cards
           result
-        when 0
-          @interface.out_of_game_info
-          break
+        when 3
+          result
         else
           @interface.error
           # @player_bank.take_bet
@@ -78,7 +77,7 @@ class StartGame
       @interface.winner(@player)
     elsif @player.cards_sum == @dealer.cards_sum
       (@player_bank.take_bet) && (@dealer_bank.take_bet)
-      @interface.winner
+      @interface.winner('')
     end
     @player.refresh
     @dealer.refresh
