@@ -1,7 +1,6 @@
 class Interface
 
-  attr_accessor :player, :dealer, :bank
-  attr_reader :stop_game
+  attr_accessor :player, :dealer, :player_bank, :dealer_bank
 
   def initialize
     @end_game = false
@@ -15,8 +14,8 @@ class Interface
   def info
     puts "Твои карты: "
     @player.cards.each { |card| print "#{card.rank}#{card.suit} " }
-    puts "Cумма карт - #{@player.cards_sum}, банк - #{@player.money}"
-    puts "Банк дилера - #{@dealer.money}"
+    puts "Cумма карт - #{@player.cards_sum}, банк - #{@player_bank.money}"
+    puts "Банк дилера - #{@dealer_bank.money}"
   end
 
   def question
@@ -33,7 +32,7 @@ class Interface
   end
 
   def out_of_game_info
-    puts "#{@player.name} закончил игру и сохранил #{@player.money} долларов в своем кармане."
+    puts "#{@player.name} закончил игру и сохранил #{@player_bank.money} долларов в своем кармане."
   end
 
   def create_player

@@ -6,25 +6,30 @@ class StartGame
 
   def initialize
     @interface = Interface.new
+    
     @player = Participant.new(@interface.create_player)
     @interface.player = @player
     @dealer = Participant.new
     @interface.dealer = @dealer
+    @player_bank = Bank.new
+    @interface.player_bank = @player_bank
+    @dealer_bank = Bank.new
+    @interface.dealer_bank = @dealer_bank
   end
 
   def start
 
     loop do
-
+      p @player_bank.money
       2.times { @interface.separator }
       @deck = Deck.new
 
       2.times { @player.take_card(@deck.add_card) }
-      @player.money = @player.money - BET
+      @player_bank.make_bet
       @player.sum_of_cards
 
       2.times { @dealer.take_card(@deck.add_card) }
-      @dealer.money = @dealer.money - BET
+      @dealer_bank.make_bet
       @dealer.sum_of_cards
 
       @interface.info
@@ -41,12 +46,12 @@ class StartGame
           @dealer.sum_of_cards
           result
         when 0
-          out_of_game_info
+          @interface.out_of_game_info
           break
         else
           @interface.error
-          @player.money += BET
-          @dealer.money += BET
+          # @player_bank.take_bet
+          # @dealer_bank.take_bet
           refresh
       end
 
@@ -66,13 +71,13 @@ class StartGame
   def result
     @interface.open_cards
     if (@player.cards_sum < @dealer.cards_sum) && (@dealer.cards_sum <= 21) || (@player.cards_sum > 21)
-      @dealer.money += PRIZE
+      @dealer_bank.take_prize
       @interface.winner(@dealer)
     elsif (@player.cards_sum > @dealer.cards_sum) && (@player.cards_sum <= 21) || (@dealer.cards_sum > 21)
-      @player.money += PRIZE
+      @player_bank.take_prize
       @interface.winner(@player)
     elsif @player.cards_sum == @dealer.cards_sum
-      (@player.money += (PRIZE/2)) && (@dealer.money += (PRIZE/2))
+      (@player_bank.take_bet) && (@dealer_bank.take_bet)
       @interface.winner
     end
     @player.refresh
@@ -80,7 +85,7 @@ class StartGame
   end
 
   def end_game?
-    (@player.money == 0) || (@dealer.money == 0)
+    (@player_bank == 0) || (@dealer_bank == 0)
   end
 
   def refresh

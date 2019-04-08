@@ -1,9 +1,8 @@
 class Participant
-  attr_accessor :name, :money, :cards, :cards_sum
+  attr_accessor :name, :cards, :cards_sum
 
   def initialize(name = 'Jack')
     @name = name
-    @money = 100
     @cards = []
   end
 
